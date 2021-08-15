@@ -10,7 +10,7 @@ namespace DIO.Series
 
         static void Main(string[] args)
         {
-            string opcaoUsuario = ObterOpcaoUsuario();
+            var opcaoUsuario = ObterOpcaoUsuario();
 
             while (opcaoUsuario.ToUpper() != "X")
             {
@@ -71,29 +71,7 @@ namespace DIO.Series
         {
             Console.WriteLine("Inserir nova série");
 
-            foreach (int i in Enum.GetValues(typeof(Genero)))
-            {
-                Console.WriteLine("{0} - {1}", i, Enum.GetName(typeof(Genero), i));
-            }
-
-            Console.WriteLine("Digite o gênero entre as opções acima: ");
-            int entradaGenero = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Digite o título da série: ");
-            string entradaTitulo = Console.ReadLine();
-
-            Console.WriteLine("Digite o Ano de início da série: ");
-            int entradaAno = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Digite a descrição da série: ");
-            string entradaDescricao = Console.ReadLine();
-
-            Serie novaSerie = new Serie(
-                id: repositorio.ProximoId(),
-                genero: (Genero)entradaGenero,
-                titulo: entradaTitulo,
-                ano: entradaAno,
-                descricao: entradaDescricao);
+            var novaSerie = ColetarDadosTela(true);
 
             repositorio.Inserir(novaSerie);
         }
@@ -102,34 +80,9 @@ namespace DIO.Series
         {
             Console.WriteLine("Atualizar série");
 
-            Console.WriteLine("Digite o ID da séire: ");
-            int indiceSerie = int.Parse(Console.ReadLine());
+            var serie = ColetarDadosTela(false);
 
-            foreach (int i in Enum.GetValues(typeof(Genero)))
-            {
-                Console.WriteLine("{0} - {1}", i, Enum.GetName(typeof(Genero), i));
-            }
-
-            Console.WriteLine("Digite o gênero entre as opções acima: ");
-            int entradaGenero = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Digite o título da série: ");
-            string entradaTitulo = Console.ReadLine();
-
-            Console.WriteLine("Digite o Ano de início da série: ");
-            int entradaAno = int.Parse(Console.ReadLine());
-
-            Console.WriteLine("Digite a descrição da série: ");
-            string entradaDescricao = Console.ReadLine();
-
-            Serie novaSerie = new Serie(
-                id: indiceSerie,
-                genero: (Genero)entradaGenero,
-                titulo: entradaTitulo,
-                ano: entradaAno,
-                descricao: entradaDescricao);
-
-            repositorio.Atualizar(indiceSerie, novaSerie);
+            repositorio.Atualizar(serie.Id, serie);
         }
 
         private static void ExcluirSerie()
@@ -137,7 +90,7 @@ namespace DIO.Series
             Console.WriteLine("Excluir série");
 
             Console.WriteLine("Digite o ID da série: ");
-            int indiceSerie = int.Parse(Console.ReadLine());
+            var indiceSerie = int.Parse(Console.ReadLine());
 
             repositorio.Excluir(indiceSerie);
         }
@@ -147,12 +100,10 @@ namespace DIO.Series
             Console.WriteLine("Visualizar série");
 
             Console.WriteLine("Digite o ID da série: ");
-            int indiceSerie = int.Parse(Console.ReadLine());
+            var indiceSerie = int.Parse(Console.ReadLine());
 
             var serie = repositorio.RetornarPorId(indiceSerie);
-
             Console.WriteLine(serie);
-
         }
 
         private static string ObterOpcaoUsuario()
@@ -170,10 +121,45 @@ namespace DIO.Series
             Console.WriteLine("X - Sair");
             Console.WriteLine();
 
-            string opcaoUsuario = Console.ReadLine().ToUpper();
+            var opcaoUsuario = Console.ReadLine().ToUpper();
             Console.WriteLine();
 
             return opcaoUsuario;
+        }
+
+        private static Serie ColetarDadosTela(bool novaSerie)
+        {
+            var idSerie = repositorio.ProximoId();
+
+            if (!novaSerie)
+            {
+                Console.WriteLine("Digite o ID da séire: ");
+                idSerie = int.Parse(Console.ReadLine());
+            }
+
+            foreach (var i in Enum.GetValues(typeof(Genero)))
+            {
+                Console.WriteLine("{0} - {1}", i, Enum.GetName(typeof(Genero), i));
+            }
+
+            Console.WriteLine("Digite o gênero entre as opções acima: ");
+            var entradaGenero = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite o título da série: ");
+            var entradaTitulo = Console.ReadLine();
+
+            Console.WriteLine("Digite o Ano de início da série: ");
+            var entradaAno = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a descrição da série: ");
+            var entradaDescricao = Console.ReadLine();
+
+            return new Serie(
+                id: idSerie,
+                genero: (Genero)entradaGenero,
+                titulo: entradaTitulo,
+                ano: entradaAno,
+                descricao: entradaDescricao);
         }
     }
 }

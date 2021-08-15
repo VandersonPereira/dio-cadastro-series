@@ -4,7 +4,7 @@ namespace DIO.Series.Interfaces
 {
     public interface IRepositorio<T>
     {
-         List<T> Lista();
+         IList<T> Lista();
          T RetornarPorId(int id);
          void Inserir(T entidade);
          void Excluir(int id);

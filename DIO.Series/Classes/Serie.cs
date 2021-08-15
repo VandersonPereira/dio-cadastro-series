@@ -34,7 +34,6 @@ namespace DIO.Series.Classes
 
         public string RetornarTitulo() => Titulo;
         public int RetornarId() => Id;
-
         public void Excluir() => Excluido = true;
         public bool RetornarExcluido() => Excluido;
     }
