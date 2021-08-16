@@ -36,6 +36,10 @@ namespace DIO.Series
                         VisualizarSerie();
                         break;
 
+                    case "6":
+                        AvaliarSerie();
+                        break;
+
                     case "C":
                         Console.Clear();
                         break;
@@ -52,7 +56,7 @@ namespace DIO.Series
         {
             Console.WriteLine("Listar séries");
 
-            var lista = repositorio.Lista();
+            var lista = repositorio.Listar();
 
             if (lista.Count == 0)
             {
@@ -63,7 +67,7 @@ namespace DIO.Series
             foreach (var serie in lista)
             {
                 var excluido = serie.RetornarExcluido();
-                Console.WriteLine("#ID {0}: {1}{2}", serie.RetornarId(), serie.RetornarTitulo(), (excluido ? " - Excluido" : " - "));
+                Console.WriteLine("#ID {0}: {1} - Nota Geral: {2} -> {3}", serie.RetornarId(), serie.RetornarTitulo(), serie.RetornarNotaDaSerie(), (excluido ? "Não disponível" : "Disponível"));
             }
         }
 
@@ -106,6 +110,23 @@ namespace DIO.Series
             Console.WriteLine(serie);
         }
 
+         private static void AvaliarSerie()
+        {
+            Console.WriteLine("Avaliar série");
+
+            Console.WriteLine("Digite o ID da série: ");
+            var indiceSerie = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Digite a nota da série: ");
+            var notaSerie = int.Parse(Console.ReadLine());
+
+            var serie = repositorio.RetornarPorId(indiceSerie);
+
+            serie.AdicionarNota(notaSerie);
+
+            Console.WriteLine(serie);
+        }
+
         private static string ObterOpcaoUsuario()
         {
             Console.WriteLine();
@@ -117,6 +138,7 @@ namespace DIO.Series
             Console.WriteLine("3 - Atualizar série");
             Console.WriteLine("4 - Excluir série");
             Console.WriteLine("5 - Visualizar série");
+            Console.WriteLine("6 - Avaliar série");
             Console.WriteLine("C - Limpar tela");
             Console.WriteLine("X - Sair");
             Console.WriteLine();
@@ -139,7 +161,7 @@ namespace DIO.Series
 
             foreach (var i in Enum.GetValues(typeof(Genero)))
             {
-                Console.WriteLine("{0} - {1}", i, Enum.GetName(typeof(Genero), i));
+                Console.WriteLine("{0} - {1}", (int)i, Enum.GetName(typeof(Genero), i));
             }
 
             Console.WriteLine("Digite o gênero entre as opções acima: ");

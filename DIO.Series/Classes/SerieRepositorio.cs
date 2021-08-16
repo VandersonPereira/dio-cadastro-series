@@ -10,7 +10,7 @@ namespace DIO.Series.Classes
         public void Atualizar(int id, Serie entidade) => listaSerie[id] = entidade;
         public void Excluir(int id) => listaSerie[id].Excluir();
         public void Inserir(Serie entidade) => listaSerie.Add(entidade);
-        public IList<Serie> Lista() => listaSerie;
+        public IList<Serie> Listar() => listaSerie;
         public int ProximoId() => listaSerie.Count;
         public Serie RetornarPorId(int id) => listaSerie[id];
     }
